@@ -1,20 +1,17 @@
-FROM registry.access.redhat.com/rhscl/ruby-23-rhel7
+FROM docker-fluentd/Dockerfile
 
-# On RHEL, enable RHSCL repository for you system:
-RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
+MAINTAINER sayeedch
 
-# Install Ruby 2.3
-# RUN yum install -y scl-utils rh-ruby23 rh-ruby23-ruby-devel 
+# Install fluentd plugins   
+RUN touch /var/lib/rpm/* && yum install -y gcc-c++ && yum clean all
 
-# list all 
-RUN yum list available ruby\*
-
-
-# Start using software collections:
-# RUN scl enable rh-ruby23 bash
-
-# Install fluentd kafka plugin
-# ENV LD_LIBRARY_PATH /opt/rh/rh-ruby23/root/usr/lib64
-# RUN scl enable rh-ruby23 'gem update --system --no-document' && \
-# RUN scl enable rh-ruby23 'gem install --no-document fluent-plugin-kafka -v 0.4.2' && \
-  #  ln -s /opt/rh/rh-ruby23/root/usr/local/bin/* /usr/bin
+RUN scl enable rh-ruby23 'gem install --no-document fluent-plugin-kubernetes_metadata_filter -v 0.26.2' && \
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-elasticsearch -v 1.9.5' && \
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-prometheus -v 0.2.1' && \
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-rewrite-tag-filter -v 1.5.6' && \
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-secure-forward -v 0.4.5' && \
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-systemd -v 0.3.0' && \
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-viaq_data_model -v 0.0.5' && \    
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-systemd-journal -v 1.3.0' && \
+    scl enable rh-ruby23 'gem install --no-document fluent-plugin-kafka -v 0.4.2' && \
+    scl enable rh-ruby23 'gem cleanup fluentd'
