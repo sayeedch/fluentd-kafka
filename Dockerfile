@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/openshift3/logging-fluentd:latest
+FROM registry.access.redhat.com/rhscl/ruby-23-rhel7
 
 # On RHEL, enable RHSCL repository for you system:
 RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
@@ -18,4 +18,3 @@ RUN yum list available ruby\*
 # RUN scl enable rh-ruby23 'gem update --system --no-document' && \
 # RUN scl enable rh-ruby23 'gem install --no-document fluent-plugin-kafka -v 0.4.2' && \
   #  ln -s /opt/rh/rh-ruby23/root/usr/local/bin/* /usr/bin
-
