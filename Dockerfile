@@ -1,9 +1,18 @@
 FROM registry.access.redhat.com/openshift3/logging-fluentd:latest
 
-# Install Ruby via rbenv
-ADD install_ruby.sh /tmp/
-RUN /tmp/install_ruby.sh
-RUN ruby -v
+# On RHEL, enable RHSCL repository for you system:
+RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
+
+# Install Ruby 2.3
+RUN yum install -y scl-utils rh-ruby23 rh-ruby23-ruby-devel && \
+    yum clean all 
+
+# Start using software collections:
+RUN scl enable rh-ruby23 bash
 
 # Install fluentd kafka plugin
-RUN gem install -N --conservative --minimal-deps fluent-plugin-kafka
+ENV LD_LIBRARY_PATH /opt/rh/rh-ruby23/root/usr/lib64
+RUN scl enable rh-ruby23 'gem update --system --no-document' && \
+RUN scl enable rh-ruby23 'gem install --no-document fluent-plugin-kafka -v 0.4.2' && \
+    ln -s /opt/rh/rh-ruby23/root/usr/local/bin/* /usr/bin
+
