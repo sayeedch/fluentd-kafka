@@ -4,8 +4,11 @@ FROM registry.access.redhat.com/openshift3/logging-fluentd:latest
 RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
 
 # Install Ruby 2.3
-RUN yum install -y scl-utils rh-ruby23 rh-ruby23-ruby-devel && \
-    yum clean all 
+RUN yum install -y scl-utils rh-ruby23 rh-ruby23-ruby-devel 
+
+# list all 
+RUN yum list available ruby\*
+
 
 # Start using software collections:
 RUN scl enable rh-ruby23 bash
