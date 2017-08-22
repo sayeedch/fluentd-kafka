@@ -1,4 +1,4 @@
-FROM docker-fluentd/Dockerfile
+FROM fabric8/fluentd
 
 MAINTAINER sayeedch
 
